@@ -1,4 +1,4 @@
-***Implement an express project and React project to practice GraphQL for my next job.***
+***Implement an express project and React project to practice GraphQL.***
 
 # Server Part
 ## start a express project
