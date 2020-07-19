@@ -7,13 +7,22 @@ const GET_BOOKS = gql`
   {
     books {
       id,
-      name
+      name,
+      genre
     }
   }
 `;
 
-function BookList(props) {
-  const { data } = useQuery(GET_BOOKS);
+function BookList() {
+  const { loading, error, data } = useQuery(GET_BOOKS);
+
+  if (loading) {
+    return <div>loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error!</div>
+  }
 
   if (data) {
     return (
@@ -24,8 +33,6 @@ function BookList(props) {
         )) }
       </ul>
     )
-  } else {
-    return <div>No Data</div>;
   }
 }
 
