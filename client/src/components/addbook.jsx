@@ -1,28 +1,10 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import { GET_AUTHOR, ADD_BOOK, GET_BOOKS } from '../queries/queries';
 
-
-const GET_AUTHOR_QUERY = gql`
-  {
-    authors {
-      name
-      id
-    }
-  }
-`;
-
-const ADD_BOOK = gql`
-  mutation($name: String!, $genre: String!, $authorId: ID!) {
-    addBook(name: $name, genre: $genre, authorId: $authorId) {
-      name
-      id
-    }
-  }
-`;
 
 function AddBook() {
-  const { data } = useQuery(GET_AUTHOR_QUERY);
+  const { data } = useQuery(GET_AUTHOR);
   const [addBook] = useMutation(ADD_BOOK);
 
   let [name, setName] = useState('');
@@ -43,9 +25,12 @@ function AddBook() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    addBook({ variables: {
-      name, genre, authorId: author
-    } });
+    addBook({
+      variables: {
+        name, genre, authorId: author
+      },
+      refetchQueries: [{ query: GET_BOOKS }]
+    });
     setAuthor('');
     setGenre('');
     setName('');
